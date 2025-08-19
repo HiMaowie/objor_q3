@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Job Details{% endblock %}
+{% block content %}
+<h1 class="mb-3">{{ job.job_title }}</h1>
+<ul class="list-group mb-3">
+  <li class="list-group-item"><strong>Location:</strong> {{ job.location }}</li>
+  <li class="list-group-item"><strong>Offer Range:</strong> ₱{{ job.min_offer }} – ₱{{ job.max_offer }}</li>
+  <li class="list-group-item"><strong>Description:</strong><br>{{ job.job_description }}</li>
+</ul>
+
+{% if is_company_admin %}
+  <div class="d-flex gap-2 mb-3">
+    <a href="{% url 'jobs:edit' job.pk %}" class="btn btn-warning">Edit</a>
+    <a href="{% url 'jobs:delete' job.pk %}" class="btn btn-danger">Delete</a>
+  </div>
+
+  <h3 class="mt-4">Applicants</h3>
+  {% if applicants %}
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <thead>
+          <tr>
+            <th>User</th><th>Email</th><th>Phone</th><th>Applied</th><th>Resume</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in applicants %}
+            <tr>
+              <td>{{ a.user.first_name }} {{ a.user.last_name }} ({{ a.user.username }})</td>
+              <td>{{ a.user.email }}</td>
+              <td>{{ a.user.phone_number|default:"-" }}</td>
+              <td>{{ a.applied_date }}</td>
+              <td><a class="btn btn-sm btn-outline-primary" href="{{ a.resume.url }}" target="_blank">View</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info">No applicants yet.</div>
+  {% endif %}
+{% else %}
+  <h3 class="mt-4">Apply to this job</h3>
+  <form method="post" action="{% url 'jobs:apply' job.id %}" enctype="multipart/form-data" class="row g-3">
+    {% csrf_token %}
+    <div class="col-12">
+      {{ form.resume.label_tag }} {{ form.resume }}
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Apply</button>
+    </div>
+  </form>
+{% endif %}
+{% endblock %}

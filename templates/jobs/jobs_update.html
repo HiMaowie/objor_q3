@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Edit Job{% endblock %}
+{% block content %}
+<h1 class="mb-4">Edit Job</h1>
+<form method="post" class="row g-3">
+  {% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="col-12">
+    {{ form.job_title.label_tag }} {{ form.job_title|add_class:"form-control" }}
+  </div>
+  <div class="col-12">
+    {{ form.job_description.label_tag }} {{ form.job_description|add_class:"form-control" }}
+  </div>
+  <div class="col-md-6">
+    {{ form.min_offer.label_tag }} {{ form.min_offer|add_class:"form-control" }}
+  </div>
+  <div class="col-md-6">
+    {{ form.max_offer.label_tag }} {{ form.max_offer|add_class:"form-control" }}
+  </div>
+  <div class="col-12">
+    {{ form.location.label_tag }} {{ form.location|add_class:"form-control" }}
+  </div>
+  <button type="submit" class="btn btn-success">Save</button>
+  <a href="{% url 'jobs:detail' object.pk %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

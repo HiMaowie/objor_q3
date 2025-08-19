@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Jobs{% endblock %}
+{% block content %}
+<h1 class="mb-4">Job Openings</h1>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-8">
+    <input name="q" type="text" class="form-control" placeholder="Search title, description, or location" value="{{ q }}">
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-primary w-100" type="submit">Search</button>
+  </div>
+</form>
+
+{% if jobs %}
+  <div class="list-group">
+    {% for job in jobs %}
+      <a class="list-group-item list-group-item-action" href="{% url 'jobs:detail' job.pk %}">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">{{ job.job_title }}</h5>
+          <small>{{ job.location }}</small>
+        </div>
+        <p class="mb-1 text-truncate">{{ job.job_description }}</p>
+        <small>₱{{ job.min_offer }} – ₱{{ job.max_offer }}</small>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="alert alert-warning">No jobs found.</div>
+{% endif %}
+{% endblock %}

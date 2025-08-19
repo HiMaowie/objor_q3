@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h1 class="mb-4">Register</h1>
+    <!-- Example email exactly as required: quiz3@objor.com -->
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="row g-3">
+        <div class="col-md-6">{{ form.first_name.label_tag }} {{ form.first_name }}</div>
+        <div class="col-md-6">{{ form.last_name.label_tag }} {{ form.last_name }}</div>
+        <div class="col-12">{{ form.username.label_tag }} {{ form.username }}</div>
+        <div class="col-12">{{ form.email.label_tag }} {{ form.email }}</div>
+        <div class="col-12">{{ form.phone_number.label_tag }} {{ form.phone_number }}</div>
+        <div class="col-md-6">{{ form.password1.label_tag }} {{ form.password1 }}</div>
+        <div class="col-md-6">{{ form.password2.label_tag }} {{ form.password2 }}</div>
+      </div>
+      {% if form.errors %}
+        <div class="alert alert-danger mt-3">
+          {{ form.errors }}
+        </div>
+      {% endif %}
+      <button type="submit" class="btn btn-primary mt-3">Create account</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
